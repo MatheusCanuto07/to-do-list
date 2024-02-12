@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+### Pré-requisitos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
-## Available Scripts
+- Node.js e npm: [Download aqui](https://nodejs.org/)
+- .NET Core SDK 8.0: [Download aqui](https://dotnet.microsoft.com/download)
+- MySQL e MYSQL Workbench: [Download aqui](https://dev.mysql.com/downloads/)
 
-In the project directory, you can run:
+### Passos para Inicializar o Projeto
 
-### `npm start`
+#### 1. Clone o repositório
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Abra um terminal e clone o repositório do seu projeto:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+git clone https://github.com/MatheusCanuto07/to-do-list.git
+cd [seucaminho]/to-do-list
+```
 
-### `npm test`
+#### 2. Configuração do Projeto ASP.NET Core
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Abra o terminal na pasta do projeto da API.
 
-### `npm run build`
+```bash
+cd [seucaminho]/ToDoListApi
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Instale as dependências do NuGet e configure a string de conexão:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+dotnet restore
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- No aquivo ConnectionContext.cs dentro da pasta Infraestrutura, modifique a string de conexão com base na sua conexão MySql
 
-### `npm run eject`
+```bash
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+  {
+      string stringConexao = "Server=localhost;Port=3306;Database=db_todolist;User Id=root;Password=DtiDigital@2024;";
+  
+      optionsBuilder.UseMySql(connectionString: stringConexao, serverVersion: ServerVersion.AutoDetect(stringConexao));
+  } 
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- No banco de dados rode o SQL abaixo para a criação do banco e tabela:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+CREATE DATABASE db_todolist;
+USE db_todolist;
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+CREATE TABLE Tasks (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(255),
+    DataCriacao DATETIME(6)
+);
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+SELECT * FROM Tasks;
+```
 
-## Learn More
+- Inicie a API:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+dotnet run
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+A API estará acessível em `https://localhost:7281`.
 
-### Code Splitting
+#### 3. Configuração do Projeto React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Abra outro terminal e vá para a pasta do projeto React:
 
-### Analyzing the Bundle Size
+```bash
+cd [seucaminho]/to-do-list
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Instale as dependências do npm:
 
-### Making a Progressive Web App
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### 4. Inicie o Projeto React
 
-### Advanced Configuration
+- Inicie o aplicativo React:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm start
+```
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+O aplicativo React estará acessível em `http://localhost:3000`.
