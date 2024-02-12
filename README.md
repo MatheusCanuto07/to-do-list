@@ -33,7 +33,7 @@ dotnet restore
 
 - No aquivo ConnectionContext.cs dentro da pasta Infraestrutura, modifique a string de conexão com base na sua conexão MySql
 
-```json
+```bash
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
       string stringConexao = "Server=localhost;Port=3306;Database=db_todolist;User Id=root;Password=DtiDigital@2024;";
